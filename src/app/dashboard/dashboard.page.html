@@ -40,8 +40,22 @@
 
 <ion-footer>
   <ion-toolbar color="dark">
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="schedule">
+          <ion-icon name="today-outline"></ion-icon>
+          <ion-label>Todo</ion-label>
+          <ion-badge> {{(form | async)?.length}}</ion-badge>
+        </ion-tab-button>
 
-    <ion-icon style="margin-left: 150px;" name="today-outline">Todo</ion-icon>
-    <ion-icon slot="end" style="margin-right: 150px;"name="checkmark-done-outline">done</ion-icon>
+
+
+        <ion-tab-button tab="about">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+          <ion-label>done</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+
   </ion-toolbar>
 </ion-footer>

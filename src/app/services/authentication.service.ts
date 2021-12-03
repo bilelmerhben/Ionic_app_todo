@@ -11,7 +11,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticateService {
-
+userId;
+email;
   constructor(
     private afAuth: AngularFireAuth,
     public firestore: AngularFirestore
@@ -27,16 +28,28 @@ export class AuthenticateService {
     });
 
   }
-
+  //fonction pour le reset du password Oublié
+forgotpassword(){
+this.afAuth.sendPasswordResetEmail(this.email).then(()=> {
+  console.log('email send');
+}).catch((error)=>{
+  console.log(error);
+});
+}
+//fonction pour signIn de l'utilisateur
   loginUser(value) {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.signInWithEmailAndPassword(value.email, value.password)
         .then(
-          res => resolve(res),
+          res => {
+            resolve(res);
+            this.userId=res.user.uid;
+            this.email=res.user.email;
+          },
           err => reject(err));
     });
   }
-
+//fonction pour logOut de l'utilisateur
   logoutUser() {
     return new Promise((resolve, reject) => {
       if (this.afAuth.currentUser) {
@@ -50,17 +63,19 @@ export class AuthenticateService {
       }
     });
   }
-  //ajouter un task to do
+//fonction pour ajouter une tache par un utilisateur
   addTask(
     taskName: string,
-    taskTime: string
+    taskTime: string,
+    isChecked: boolean
   ){ return new Promise<void> ((resolve, reject) => {
     const id = this.firestore.createId();
-    console.log(id);
-    return this.firestore.doc(`taskList/${id}`).set({
+
+    return this.firestore.doc(`${this.userId}/${id}`).set({
       id,
       taskName,
-      taskTime
+      taskTime,
+      isChecked
     }).then((res) => {
 
       resolve(res);
@@ -70,13 +85,31 @@ export class AuthenticateService {
   });
 }
 
-//Get all tasks
+//fonction pour récuperer tous les tache d'un utilisateur
 getallTasks(): Observable<any[]> {
-  return this.firestore.collection<any>(`taskList`).valueChanges();
+  return this.firestore.collection<any>(`${this.userId}`).valueChanges();
 }
 
   userDetails() {
     return this.afAuth.user;
+  }
+
+
+
+  // récupérer une seule tache de l'utilsateur
+  getOneTask(id: string) {
+    //this.bookingRef = this.db.object('/appointment/' + id);
+    //return this.bookingRef;
+  }
+
+
+  // Update
+  updateBooking(id, apt: Task) {
+   /*  return this.bookingRef.update({
+      name: apt.name,
+      email: apt.email,
+      mobile: apt.mobile
+    })*/
   }
 }
 

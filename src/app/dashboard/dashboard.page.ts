@@ -42,8 +42,6 @@ s;
   ngOnInit() {
    this.form=this.authService.getallTasks();
 
-    console.log( this.form);
-
     this.authService.userDetails().subscribe(res => {
       console.log('res', res);
       if (res !== null) {
@@ -76,7 +74,7 @@ ss(){
       });
   }
   submit(){
-    this.authService.addTask(this.task.taskName,this.task.taskTime);
+    this.authService.addTask(this.task.taskName,this.task.taskTime,false);
     this.task.taskName='';
   }
   submitTask(){

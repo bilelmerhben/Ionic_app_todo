@@ -46,7 +46,9 @@ export class LoginPage implements OnInit {
     });
   }
 
-
+  forgotpassword(){
+    this.authService.forgotpassword();
+  }
 
 
   loginUser(value) {
