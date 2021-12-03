@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Task } from '../task';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,9 +13,10 @@ import { Observable } from 'rxjs';
 export class AuthenticateService {
 userId;
 email;
+tasksCollectionRef: AngularFirestoreCollection<any>;
   constructor(
     private afAuth: AngularFireAuth,
-    public firestore: AngularFirestore
+    public firestore: AngularFirestore,
   ) { }
 
   registerUser(value) {
@@ -90,6 +91,17 @@ getallTasks(): Observable<any[]> {
   return this.firestore.collection<any>(`${this.userId}`).valueChanges();
 }
 
+//fonction pour récuperer tous les tache d'un utilisateur
+getallTasksArechecked(): Observable<any[]>{
+  return this.firestore.collection<any>(`${this.userId}`,
+  ref => ref.where('isChecked','==',true)).valueChanges();
+/* const data$ = this.fireStore.collection('Sales',
+ref => ref.where('TransactionDate', '==', formatDate(new
+                  Date,'yyyy/MM/dd', 'en')));
+
+// Subscribing to collection observable to log out the data
+data$.subscribe(data => console.log(data)) */
+}
   userDetails() {
     return this.afAuth.user;
   }
@@ -97,19 +109,15 @@ getallTasks(): Observable<any[]> {
 
 
   // récupérer une seule tache de l'utilsateur
-  getOneTask(id: string) {
-    //this.bookingRef = this.db.object('/appointment/' + id);
-    //return this.bookingRef;
+  getTaskDetail(taskId: string): Observable<any> {
+    return this.firestore.collection(`${this.userId}`).doc(taskId).valueChanges();
   }
 
 
   // Update
-  updateBooking(id, apt: Task) {
-   /*  return this.bookingRef.update({
-      name: apt.name,
-      email: apt.email,
-      mobile: apt.mobile
-    })*/
+  updateTask(taskId: string,bol: boolean) {
+    this.firestore.collection(`${this.userId}`).doc(taskId)
+    .update({ isChecked:bol});
   }
 }
 

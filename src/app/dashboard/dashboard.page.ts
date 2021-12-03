@@ -13,15 +13,8 @@ import { AuthenticateService } from '../services/authentication.service';
 export class DashboardPage implements OnInit {
 
   userEmail: string;
-s;
-
-  stytxt='';
-
-  /* public form = [
-    { val: 'Pepperoni', isChecked: true },
-    { val: 'Sausage', isChecked: false },
-    { val: 'Mushroom', isChecked: false }
-  ]; */
+  stytxt='text-decoration:line-through;';
+form2;
   public form= new Observable<any[]>();
   style='opacity:0;';
   d = new Date(); // for now
@@ -31,7 +24,7 @@ s;
     taskIsChecked:false
   };
 
-  dt=`${this.d.getDay()}/${this.d.getMonth()}/${this.d.getFullYear()}`;
+  dt=`${this.d.getDate()}/${this.d.getMonth()+1}/${this.d.getFullYear()}`;
   variable=true;
   constructor(
     private navCtrl: NavController,
@@ -40,10 +33,12 @@ s;
   ) { }
 
   ngOnInit() {
+    console.log(this.dt);
+    this.form2=this.authService.getallTasksArechecked();
+
    this.form=this.authService.getallTasks();
 
     this.authService.userDetails().subscribe(res => {
-      console.log('res', res);
       if (res !== null) {
         this.userEmail = res.email;
       } else {
@@ -52,25 +47,17 @@ s;
     }, err => {
       console.log('err', err);
     });
-
   }
 
-ss(){
-  this.s=true;
-  if(this.s){
-    this.stytxt='text-decoration:line-through;';
-    this.s=false;
-  }
 
-}
   logout() {
     this.authService.logoutUser()
       .then(res => {
-        console.log(res);
+       // console.log(res);
         this.navCtrl.navigateBack('');
       })
       .catch(error => {
-        console.log(error);
+       // console.log(error);
       });
   }
   submit(){
@@ -85,4 +72,13 @@ ss(){
     this.variable=true;
     this.style='opacity:0;';
   }
+update(id: any,bo: any){
+  this.authService.updateTask(id,bo);
+}
+doneClick(){
+this.form=this.form2;
+}
+todoClick(){
+  this.form=this.authService.getallTasks();;
+}
 }
