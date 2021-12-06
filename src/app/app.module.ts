@@ -18,9 +18,7 @@ import { environment } from '../environments/environment';
       AppRoutingModule,
       AngularFireAuthModule,
       AngularFireModule.initializeApp(environment.firebase),
-     // AngularFireDatabase
      AngularFirestoreModule
-      // AngularFireObject
     ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

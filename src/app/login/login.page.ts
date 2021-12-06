@@ -47,6 +47,7 @@ export class LoginPage implements OnInit {
   }
 
   forgotpassword(){
+    console.log('test');
     this.authService.forgotpassword();
   }
 

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Task } from '../task';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
@@ -95,26 +94,20 @@ getallTasks(): Observable<any[]> {
 getallTasksArechecked(): Observable<any[]>{
   return this.firestore.collection<any>(`${this.userId}`,
   ref => ref.where('isChecked','==',true)).valueChanges();
-/* const data$ = this.fireStore.collection('Sales',
-ref => ref.where('TransactionDate', '==', formatDate(new
-                  Date,'yyyy/MM/dd', 'en')));
 
-// Subscribing to collection observable to log out the data
-data$.subscribe(data => console.log(data)) */
 }
+//pour récupérer les détails d'un utilisateur
   userDetails() {
     return this.afAuth.user;
   }
 
-
-
-  // récupérer une seule tache de l'utilsateur
+  // récupérer une seule tache d'un utilsateur
   getTaskDetail(taskId: string): Observable<any> {
     return this.firestore.collection(`${this.userId}`).doc(taskId).valueChanges();
   }
 
 
-  // Update
+  // Update du tache si elle est checked or non
   updateTask(taskId: string,bol: boolean) {
     this.firestore.collection(`${this.userId}`).doc(taskId)
     .update({ isChecked:bol});

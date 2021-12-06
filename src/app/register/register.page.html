@@ -6,9 +6,17 @@
 
 <ion-content class="ion-padding">
   <form class="form"  [formGroup]="validationsform" (ngSubmit)="tryRegister(validationsform.value)">
-    <ion-avatar class="">
-      <img src="https://previews.123rf.com/images/khalide91/khalide911912/khalide91191200649/136620960-key-user-logo-icon-design-vector-image.jpg"/>
-    </ion-avatar>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="5" offset="5">
+          <ion-avatar class="">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1MsGDVdQ4LEfahqkt0YJMqUtiNkpL5kb4VIludmZ7SmtyRWwydENYfC11SE-BYVdWEvI&usqp=CAU"/>
+          </ion-avatar>
+        </ion-col>
+      </ion-row>
+
+      </ion-grid>
+
     <ion-item>
       <ion-label position="floating" color="primary">Email</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
@@ -34,10 +42,17 @@
         </div>
       </ng-container>
     </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" offset="4">
+          <ion-button class="submit-btn" type="submit" [disabled]="!validationsform.valid">Register</ion-button>
 
+        </ion-col>
+      </ion-row>
 
-    <ion-button class="submit-btn" type="submit" [disabled]="!validationsform.valid">Register</ion-button>
-    <label class="error-message">{{errorMessage}}</label>
+      </ion-grid>
+
+     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
 
   </form>

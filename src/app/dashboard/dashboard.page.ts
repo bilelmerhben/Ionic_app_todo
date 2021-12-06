@@ -14,16 +14,17 @@ export class DashboardPage implements OnInit {
 
   userEmail: string;
   stytxt='text-decoration:line-through;';
-form2;
+  form2;
   public form= new Observable<any[]>();
   style='opacity:0;';
-  d = new Date(); // for now
+  d = new Date(); //date for now
+  //une tache sous form d'objet
   task={
     taskName: '',
     taskTime: `${this.d.getHours()}:${this.d.getMinutes()}`,
     taskIsChecked:false
   };
-
+//variable date pour afficher la date d'aujourd'hui
   dt=`${this.d.getDate()}/${this.d.getMonth()+1}/${this.d.getFullYear()}`;
   variable=true;
   constructor(
@@ -33,11 +34,11 @@ form2;
   ) { }
 
   ngOnInit() {
-    console.log(this.dt);
+   //liste des taches checkés
     this.form2=this.authService.getallTasksArechecked();
-
+  //liste de tous les taches
    this.form=this.authService.getallTasks();
-
+// details du user
     this.authService.userDetails().subscribe(res => {
       if (res !== null) {
         this.userEmail = res.email;
@@ -49,35 +50,40 @@ form2;
     });
   }
 
-
+//pour logout
   logout() {
     this.authService.logoutUser()
       .then(res => {
-       // console.log(res);
         this.navCtrl.navigateBack('');
       })
       .catch(error => {
        // console.log(error);
       });
   }
+  //ajouter une tache
   submit(){
     this.authService.addTask(this.task.taskName,this.task.taskTime,false);
     this.task.taskName='';
   }
+  //affichage du button Annuler
   submitTask(){
     this.variable=false;
    this.style='opacity:1;';
   }
+  //cacher le button Annuler
   submitTaskAnnuler(){
     this.variable=true;
     this.style='opacity:0;';
   }
-update(id: any,bo: any){
-  this.authService.updateTask(id,bo);
+//pour modifier la tache dans la base donnée si elle est checked ou pas
+update(id: any,checked: any){
+  this.authService.updateTask(id,checked);
 }
+//pour tabs done
 doneClick(){
 this.form=this.form2;
 }
+//pour tabs todod
 todoClick(){
   this.form=this.authService.getallTasks();;
 }

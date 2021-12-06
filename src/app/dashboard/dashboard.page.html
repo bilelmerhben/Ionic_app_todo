@@ -9,28 +9,32 @@
 <ion-content class="ion-padding">
  <h1>Aujourd'hui</h1>
  <h3>{{dt}}</h3>
-
+<!-- liste des taches -->
 <ion-content class="padding">
   <ion-item  style="margin-top: 10px;margin-bottom: 10px;"color="dark" *ngFor="let entry of form | async" routerLink="/detail/{{entry.id}}"  >
     <!-- -->
     <ion-label  *ngIf="entry.isChecked;else nono">
       <h2 [style]="stytxt">{{ entry.taskName}}</h2>
       <p>{{ entry.taskTime }}</p>
-      <ion-checkbox style="float: right;margin-top: -25px;" slot="end" [(ngModel)]="entry.isChecked"  (ngModelChange)="update(entry.id,entry.isChecked)"></ion-checkbox>
+      <ion-checkbox style="float: right;margin-top: -25px;" slot="end"
+      [(ngModel)]="entry.isChecked"  (ngModelChange)="update(entry.id,entry.isChecked)"></ion-checkbox>
     </ion-label>
       <ng-template #nono>
         <ion-label>
         <h2>{{ entry.taskName}}</h2>
         <p>{{ entry.taskTime }}</p>
-        <ion-checkbox style="float: right;margin-top: -25px;" slot="end" [(ngModel)]="entry.isChecked"  (ngModelChange)="update(entry.id,entry.isChecked)"></ion-checkbox>
+        <ion-checkbox style="float: right;margin-top: -25px;" slot="end"
+         [(ngModel)]="entry.isChecked"  (ngModelChange)="update(entry.id,entry.isChecked)"></ion-checkbox>
       </ion-label>
       </ng-template>
 
   </ion-item>
+  <!-- Ajout d'une tache -->
 <ion-content [style]="style" color="dark" style="height: 105px;"  >
-  <ion-input position="floating" placeholder="Enter une tache" type="text" name="tache" ngModel [(ngModel)]="task.taskName">
+  <ion-input position="floating" placeholder="Enter une tache"
+  type="text" name="tache" ngModel [(ngModel)]="task.taskName">
   </ion-input>
-  <ion-button   class=""style="float:right;margin-right:10px;"  type="submit" (click)="submit()">+</ion-button>
+  <ion-button   style="float:right;margin-right:10px;"  type="submit" (click)="submit()">+</ion-button>
 </ion-content>
 </ion-content>
 
